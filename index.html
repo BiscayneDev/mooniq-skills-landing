@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moon IQ - Agent Skills</title>
+  <meta name="description" content="Give your agent financial superpowers. 10 skills. One command. Any agent.">
+  <link rel="icon" href="https://www.moonpay.com/favicon.ico">
+  <style>
+    :root {
+      --bg-body: #0a0a0a;
+      --bg-panel: #050505;
+      --border-dim: #1a1a1a;
+      --border-mid: #2a2a2a;
+      --text-main: #e5e5e5;
+      --text-muted: #737373;
+      --text-dark: #404040;
+      --accent-purple: #7c3aed;
+      --accent-purple-dim: rgba(124, 58, 237, 0.15);
+      --accent-purple-border: rgba(124, 58, 237, 0.3);
+      --diff-add-bg: rgba(124, 58, 237, 0.12);
+      --diff-add-text: #a78bfa;
+      --diff-add-border: rgba(124, 58, 237, 0.4);
+      --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      font-family: var(--font-mono);
+      font-size: 14px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+    .header {
+      width: 100%;
+      max-width: 900px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding: 0 4px;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .logo svg {
+      height: 24px;
+      width: auto;
+    }
+    .logo-divider {
+      color: var(--border-mid);
+      font-size: 20px;
+      font-weight: 200;
+    }
+    .logo-text {
+      color: var(--text-main);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+    }
+    .header-links {
+      display: flex;
+      gap: 20px;
+    }
+    .header-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 13px;
+      transition: color 0.2s;
+    }
+    .header-links a:hover {
+      color: var(--text-main);
+    }
+    .editor-frame {
+      width: 100%;
+      max-width: 900px;
+      border: 1px solid var(--border-mid);
+      background: var(--bg-body);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .file-header {
+      padding: 12px 16px;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border-dim);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      background: linear-gradient(135deg, rgba(124, 58, 237, 0.05) 0%, transparent 50%);
+    }
+    .file-path { color: var(--text-muted); }
+    .file-path span { color: var(--text-main); }
+    .status-badge { 
+      color: var(--accent-purple); 
+      font-size: 12px;
+      background: var(--accent-purple-dim);
+      padding: 4px 10px;
+      border-radius: 4px;
+    }
+    .code-area {
+      padding: 24px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .code-line {
+      display: grid;
+      grid-template-columns: 48px 24px 1fr;
+      align-items: flex-start;
+      padding: 2px 0;
+      font-size: 14px;
+      line-height: 20px;
+    }
+    @media (max-width: 600px) {
+      .code-line { grid-template-columns: 32px 16px 1fr; font-size: 12px; }
+      .header { flex-direction: column; gap: 16px; align-items: flex-start; }
+      .header-links { gap: 16px; }
+    }
+    .line-num {
+      text-align: right;
+      padding-right: 16px;
+      color: var(--text-dark);
+      user-select: none;
+    }
+    .diff-marker {
+      text-align: center;
+      color: var(--text-dark);
+      user-select: none;
+    }
+    .line-content {
+      padding-left: 4px;
+      padding-right: 16px;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+    .diff-add {
+      background-color: var(--diff-add-bg);
+      border-left: 2px solid var(--diff-add-border);
+    }
+    .diff-add .line-num, .diff-add .diff-marker { color: var(--text-muted); }
+    .diff-add .line-content { color: var(--diff-add-text); }
+    .comment { color: var(--text-muted); }
+    .keyword { color: var(--accent-purple); }
+    .section-header {
+      padding: 0 16px;
+      color: var(--text-muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+    }
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1px;
+      background-color: var(--border-dim);
+      margin: 0 16px 32px 16px;
+      border: 1px solid var(--border-dim);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .skill-card {
+      background-color: var(--bg-body);
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .skill-card:hover { 
+      background-color: var(--accent-purple-dim);
+    }
+    .skill-name { color: var(--text-main); margin-bottom: 6px; font-size: 13px; }
+    .skill-desc { color: var(--text-muted); font-size: 11px; }
+    .workflow-step {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      padding: 8px 16px;
+    }
+    .step-marker { 
+      color: var(--accent-purple); 
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .partners {
+      padding: 24px 16px;
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      color: var(--text-dark);
+      font-size: 13px;
+    }
+    .partner-item { transition: color 0.2s; cursor: default; }
+    .partner-item:hover { color: var(--text-main); }
+    .status-bar {
+      margin-top: auto;
+      border-top: 1px solid var(--border-dim);
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(135deg, transparent 50%, rgba(124, 58, 237, 0.03) 100%);
+      font-size: 13px;
+    }
+    .shortcuts { display: flex; gap: 20px; }
+    .shortcut-item {
+      color: var(--text-muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s;
+      font-size: 12px;
+    }
+    .shortcut-item:hover { color: var(--text-main); }
+    .key { 
+      color: var(--accent-purple);
+      background: var(--accent-purple-dim);
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 11px;
+    }
+    .cursor {
+      display: inline-block;
+      width: 8px;
+      height: 15px;
+      background-color: var(--accent-purple);
+      animation: blink 1s step-end infinite;
+      vertical-align: middle;
+      margin-left: 4px;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+    .btn-copy {
+      background: transparent;
+      border: 1px solid var(--border-mid);
+      color: var(--text-muted);
+      padding: 6px 14px;
+      cursor: pointer;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 4px;
+    }
+    .btn-copy:hover { 
+      border-color: var(--accent-purple); 
+      color: var(--text-main);
+      background: var(--accent-purple-dim);
+    }
+    .btn-copy.copied { 
+      border-color: var(--accent-purple); 
+      color: var(--accent-purple);
+      background: var(--accent-purple-dim);
+    }
+    .stat-group { 
+      display: flex; 
+      gap: 16px; 
+      font-size: 12px; 
+      color: var(--text-dark);
+      align-items: center;
+    }
+    .stat-group svg {
+      height: 16px;
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" style="height: 24px; width: 24px;">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M14 28C21.732 28 28 21.732 28 14C28 6.26801 21.732 0 14 0C6.26801 0 0 6.26801 0 14C0 21.732 6.26801 28 14 28ZM14.0001 22.1176C18.4831 22.1176 22.1177 18.483 22.1177 13.9999C22.1177 9.51691 18.4831 5.88232 14.0001 5.88232C9.51702 5.88232 5.88243 9.51691 5.88243 13.9999C5.88243 18.483 9.51702 22.1176 14.0001 22.1176Z" fill="url(#paint0_linear)"/>
+        <defs>
+          <linearGradient id="paint0_linear" x1="14" y1="0" x2="14" y2="28" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#7C3AED"/>
+            <stop offset="1" stop-color="#A78BFA"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      <span class="logo-text" style="font-size: 16px; font-weight: 600;">Moon IQ</span>
+      <span class="logo-divider">/</span>
+      <span class="logo-text">Skills</span>
+    </div>
+    <nav class="header-links">
+      <a href="https://moon-iq.com/docs">Docs</a>
+      <a href="https://moon-iq.com/blog">Blog</a>
+      <a href="https://moon-iq.com/chat">Launch App</a>
+    </nav>
+  </header>
+
+  <div class="editor-frame">
+    <div class="file-header">
+      <div class="file-path">skills/<span>INSTALL.md</span></div>
+      <div class="status-badge">10 skills</div>
+    </div>
+    
+    <div class="code-area">
+      <div class="code-line">
+        <span class="line-num">1</span>
+        <span class="diff-marker"></span>
+        <span class="line-content comment"># Give your agent financial superpowers</span>
+      </div>
+      <div class="code-line">
+        <span class="line-num">2</span>
+        <span class="diff-marker"></span>
+        <span class="line-content comment"># 10 skills. One command. Any agent.</span>
+      </div>
+      <div class="code-line">
+        <span class="line-num">3</span>
+        <span class="diff-marker"></span>
+        <span class="line-content"></span>
+      </div>
+      <div class="code-line diff-add">
+        <span class="line-num">4</span>
+        <span class="diff-marker">+</span>
+        <span class="line-content">npx moon-iq-skills install --to ./skills<span class="cursor"></span></span>
+      </div>
+      <div class="code-line">
+        <span class="line-num">5</span>
+        <span class="diff-marker"></span>
+        <span class="line-content" style="padding-top: 8px;">
+          <button class="btn-copy" onclick="copyCommand(this)">
+            <span>⌘</span> Copy
+          </button>
+        </span>
+      </div>
+    </div>
+
+    <div class="code-area">
+      <div class="code-line">
+        <span class="line-num">6</span>
+        <span class="diff-marker"></span>
+        <span class="line-content"><span class="keyword">const</span> skills = [</span>
+      </div>
+    </div>
+
+    <div class="skills-grid">
+      <div class="skill-card">
+        <div class="skill-name">"buy_crypto"</div>
+        <div class="skill-desc">USDC → any token</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-name">"sell_crypto"</div>
+        <div class="skill-desc">any token → USDC</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-name">"swap_tokens"</div>
+        <div class="skill-desc">token A → token B</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-name">"check_wallet"</div>
+        <div class="skill-desc">balances & holdings</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-name">"discover_tokens"</div>
+        <div class="skill-desc">search & trending</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-name">"limit_orders"</div>
+        <div class="skill-desc">buy/sell at target price</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-name">"recurring_orders"</div>
+        <div class="skill-desc">DCA automation</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-name">"lending"</div>
+        <div class="skill-desc">deposit & earn yield</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-name">"onramp_offramp"</div>
+        <div class="skill-desc">fiat ↔ crypto</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-name">"auth"</div>
+        <div class="skill-desc">login & troubleshoot</div>
+      </div>
+    </div>
+
+    <div class="code-area" style="padding-top: 0;">
+      <div class="code-line">
+        <span class="line-num">17</span>
+        <span class="diff-marker"></span>
+        <span class="line-content">];</span>
+      </div>
+      <div class="code-line">
+        <span class="line-num">18</span>
+        <span class="diff-marker"></span>
+        <span class="line-content"></span>
+      </div>
+    </div>
+
+    <div class="section-header">Quick Start</div>
+    <div class="code-area" style="padding-top: 8px; padding-bottom: 32px;">
+      <div class="workflow-step">
+        <span class="step-marker">01</span>
+        <span class="line-content">npm i -g moon-iq</span>
+      </div>
+      <div class="workflow-step">
+        <span class="step-marker">02</span>
+        <span class="line-content">mooniq login</span>
+      </div>
+      <div class="workflow-step">
+        <span class="step-marker">03</span>
+        <span class="line-content">npx moon-iq-skills install --to ./skills</span>
+      </div>
+      <div class="workflow-step">
+        <span class="step-marker">04</span>
+        <span class="comment">Agent reads SKILL.md → executes mooniq commands</span>
+      </div>
+    </div>
+
+    <div class="section-header">Works With</div>
+    <div class="partners">
+      <div class="partner-item">Clawdbot</div>
+      <div class="partner-item">Cursor</div>
+      <div class="partner-item">Claude</div>
+      <div class="partner-item">Windsurf</div>
+      <div class="partner-item" style="color: var(--text-muted)">Any SKILL.md-aware agent</div>
+    </div>
+
+    <div class="status-bar">
+      <div class="shortcuts">
+        <a href="https://moon-iq.com/docs" class="shortcut-item"><span class="key">D</span> Docs</a>
+        <a href="https://github.com/moonpay/moon-iq" class="shortcut-item"><span class="key">G</span> GitHub</a>
+        <a href="https://npmjs.com/package/moon-iq-skills" class="shortcut-item"><span class="key">N</span> npm</a>
+      </div>
+      <div class="stat-group">
+        <span>v0.2.3</span>
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+        <span style="color: var(--text-muted)">by MoonPay</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function copyCommand(btn) {
+      navigator.clipboard.writeText('npx moon-iq-skills install --to ./skills');
+      btn.innerHTML = '<span>✓</span> Copied';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.innerHTML = '<span>⌘</span> Copy';
+        btn.classList.remove('copied');
+      }, 2000);
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+      if (e.key === 'd' || e.key === 'D') window.open('https://moon-iq.com/docs', '_blank');
+      if (e.key === 'g' || e.key === 'G') window.open('https://github.com/moonpay/moon-iq', '_blank');
+      if (e.key === 'n' || e.key === 'N') window.open('https://npmjs.com/package/moon-iq-skills', '_blank');
+    });
+  </script>
+</body>
+</html>
