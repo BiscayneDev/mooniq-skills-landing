@@ -109,6 +109,17 @@
       "official": true,
       "installCmd": "npx moon-iq-skills install mooniq-auth --to ./skills",
       "docsUrl": "https://moon-iq.com/docs/skills/auth"
+    },
+    {
+      "id": "web-search",
+      "name": "Web Search & Extraction",
+      "description": "Search the web and extract content from URLs. Research tokens and projects before trading.",
+      "author": "inference.sh",
+      "authorUrl": "https://inference.sh",
+      "category": "research",
+      "official": false,
+      "installCmd": "npx skills add inference-sh/skills --skill web-search",
+      "docsUrl": "https://skills.sh/inference-sh/skills/web-search"
     }
   ],
   "categories": [
