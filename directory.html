@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skills Directory - Moon IQ</title>
+  <meta name="description" content="Browse and install agent skills for Moon IQ. Trading, DeFi, automation, and more.">
+  <link rel="icon" href="https://www.moonpay.com/favicon.ico">
+  <style>
+    :root {
+      --bg-body: #0a0a0a;
+      --bg-card: #111111;
+      --border-dim: #1a1a1a;
+      --border-mid: #2a2a2a;
+      --text-main: #e5e5e5;
+      --text-muted: #737373;
+      --text-dark: #404040;
+      --accent-purple: #7c3aed;
+      --accent-purple-dim: rgba(124, 58, 237, 0.15);
+      --accent-purple-border: rgba(124, 58, 237, 0.3);
+      --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      font-family: var(--font-mono);
+      font-size: 14px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+    .logo svg { height: 24px; width: 24px; }
+    .logo-text { color: var(--text-main); font-size: 16px; font-weight: 600; }
+    .logo-divider { color: var(--border-mid); font-size: 20px; font-weight: 200; margin: 0 4px; }
+    .logo-sub { color: var(--text-muted); font-size: 14px; }
+    .header-links {
+      display: flex;
+      gap: 20px;
+    }
+    .header-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 13px;
+      transition: color 0.2s;
+    }
+    .header-links a:hover { color: var(--text-main); }
+    
+    .hero {
+      text-align: center;
+      padding: 3rem 0;
+      border-bottom: 1px solid var(--border-dim);
+      margin-bottom: 2rem;
+    }
+    .hero h1 {
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, var(--text-main) 0%, var(--accent-purple) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero p {
+      color: var(--text-muted);
+      font-size: 14px;
+      max-width: 500px;
+      margin: 0 auto 24px;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn {
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      text-decoration: none;
+      transition: all 0.2s;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-primary {
+      background: var(--accent-purple);
+      color: white;
+    }
+    .btn-primary:hover {
+      background: #6d28d9;
+    }
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--border-mid);
+      color: var(--text-muted);
+    }
+    .btn-secondary:hover {
+      border-color: var(--accent-purple);
+      color: var(--text-main);
+    }
+
+    .filters {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      padding: 6px 14px;
+      border-radius: 4px;
+      background: transparent;
+      border: 1px solid var(--border-dim);
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .filter-btn:hover {
+      border-color: var(--border-mid);
+      color: var(--text-main);
+    }
+    .filter-btn.active {
+      background: var(--accent-purple-dim);
+      border-color: var(--accent-purple-border);
+      color: var(--accent-purple);
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px;
+    }
+    .skill-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-dim);
+      border-radius: 8px;
+      padding: 20px;
+      transition: all 0.2s;
+    }
+    .skill-card:hover {
+      border-color: var(--border-mid);
+      transform: translateY(-2px);
+    }
+    .skill-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+    .skill-name {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+    .skill-badge {
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: var(--accent-purple-dim);
+      color: var(--accent-purple);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .skill-desc {
+      color: var(--text-muted);
+      font-size: 13px;
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+    .skill-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 12px;
+      border-top: 1px solid var(--border-dim);
+    }
+    .skill-author {
+      font-size: 12px;
+      color: var(--text-dark);
+    }
+    .skill-author a {
+      color: var(--text-muted);
+      text-decoration: none;
+    }
+    .skill-author a:hover {
+      color: var(--accent-purple);
+    }
+    .skill-category {
+      font-size: 11px;
+      color: var(--text-dark);
+    }
+    .skill-install {
+      margin-top: 12px;
+      background: var(--bg-body);
+      border: 1px solid var(--border-dim);
+      border-radius: 4px;
+      padding: 10px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+    .skill-install code {
+      font-size: 11px;
+      color: var(--text-muted);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .copy-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-dark);
+      cursor: pointer;
+      padding: 4px;
+      transition: color 0.2s;
+      flex-shrink: 0;
+    }
+    .copy-btn:hover {
+      color: var(--accent-purple);
+    }
+    .copy-btn.copied {
+      color: var(--accent-purple);
+    }
+
+    .submit-section {
+      margin-top: 4rem;
+      padding: 3rem;
+      border: 1px dashed var(--border-mid);
+      border-radius: 8px;
+      text-align: center;
+    }
+    .submit-section h3 {
+      font-size: 18px;
+      margin-bottom: 12px;
+    }
+    .submit-section p {
+      color: var(--text-muted);
+      font-size: 13px;
+      margin-bottom: 20px;
+    }
+
+    .footer {
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border-dim);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: var(--text-dark);
+    }
+    .footer a {
+      color: var(--text-muted);
+      text-decoration: none;
+    }
+    .footer a:hover {
+      color: var(--text-main);
+    }
+
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 22px; }
+      .skills-grid { grid-template-columns: 1fr; }
+      .header { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <a href="/" class="logo">
+        <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M14 28C21.732 28 28 21.732 28 14C28 6.26801 21.732 0 14 0C6.26801 0 0 6.26801 0 14C0 21.732 6.26801 28 14 28ZM14.0001 22.1176C18.4831 22.1176 22.1177 18.483 22.1177 13.9999C22.1177 9.51691 18.4831 5.88232 14.0001 5.88232C9.51702 5.88232 5.88243 9.51691 5.88243 13.9999C5.88243 18.483 9.51702 22.1176 14.0001 22.1176Z" fill="url(#paint0_linear)"/>
+          <defs>
+            <linearGradient id="paint0_linear" x1="14" y1="0" x2="14" y2="28" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#7C3AED"/>
+              <stop offset="1" stop-color="#A78BFA"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="logo-text">Moon IQ</span>
+        <span class="logo-divider">/</span>
+        <span class="logo-sub">Directory</span>
+      </a>
+      <nav class="header-links">
+        <a href="/">Home</a>
+        <a href="https://moon-iq.com/docs">Docs</a>
+        <a href="https://moon-iq.com/blog">Blog</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <h1>Skills Directory</h1>
+      <p>Browse community and official skills for your AI agents. One command to install.</p>
+      <div class="hero-actions">
+        <a href="https://github.com/BiscayneDev/mooniq-skills-landing/issues/new?template=skill-submission.md" class="btn btn-primary">+ Submit a Skill</a>
+        <a href="https://moon-iq.com/docs/skills" class="btn btn-secondary">Build Your Own →</a>
+      </div>
+    </section>
+
+    <div class="filters" id="filters">
+      <button class="filter-btn active" data-category="all">All</button>
+    </div>
+
+    <div class="skills-grid" id="skills-grid">
+      <!-- Skills loaded via JS -->
+    </div>
+
+    <section class="submit-section">
+      <h3>Build a Skill?</h3>
+      <p>Create a SKILL.md, submit a PR, and share it with the community.</p>
+      <a href="https://github.com/BiscayneDev/mooniq-skills-landing" class="btn btn-secondary">View on GitHub</a>
+    </section>
+
+    <footer class="footer">
+      <span>by <a href="https://moonpay.com">MoonPay</a></span>
+      <div>
+        <a href="https://moon-iq.com/docs">Docs</a> · 
+        <a href="https://github.com/BiscayneDev/mooniq-skills-landing">GitHub</a>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    let skillsData = null;
+    let currentCategory = 'all';
+
+    async function loadSkills() {
+      const res = await fetch('/skills.json');
+      skillsData = await res.json();
+      renderFilters();
+      renderSkills();
+    }
+
+    function renderFilters() {
+      const container = document.getElementById('filters');
+      container.innerHTML = '<button class="filter-btn active" data-category="all">All</button>';
+      
+      skillsData.categories.forEach(cat => {
+        const btn = document.createElement('button');
+        btn.className = 'filter-btn';
+        btn.dataset.category = cat.id;
+        btn.textContent = `${cat.icon} ${cat.name}`;
+        btn.onclick = () => setCategory(cat.id);
+        container.appendChild(btn);
+      });
+
+      document.querySelector('[data-category="all"]').onclick = () => setCategory('all');
+    }
+
+    function setCategory(cat) {
+      currentCategory = cat;
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.category === cat);
+      });
+      renderSkills();
+    }
+
+    function renderSkills() {
+      const container = document.getElementById('skills-grid');
+      const filtered = currentCategory === 'all' 
+        ? skillsData.skills 
+        : skillsData.skills.filter(s => s.category === currentCategory);
+      
+      container.innerHTML = filtered.map(skill => `
+        <div class="skill-card">
+          <div class="skill-header">
+            <div class="skill-name">${skill.name}</div>
+            ${skill.official ? '<span class="skill-badge">Official</span>' : ''}
+          </div>
+          <div class="skill-desc">${skill.description}</div>
+          <div class="skill-install">
+            <code>${skill.installCmd}</code>
+            <button class="copy-btn" onclick="copyInstall(this, '${skill.installCmd}')" title="Copy">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+            </button>
+          </div>
+          <div class="skill-meta">
+            <span class="skill-author">by <a href="${skill.authorUrl}">${skill.author}</a></span>
+            <span class="skill-category">${getCategoryName(skill.category)}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function getCategoryName(id) {
+      const cat = skillsData.categories.find(c => c.id === id);
+      return cat ? `${cat.icon} ${cat.name}` : id;
+    }
+
+    function copyInstall(btn, cmd) {
+      navigator.clipboard.writeText(cmd);
+      btn.classList.add('copied');
+      btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"></path></svg>`;
+      setTimeout(() => {
+        btn.classList.remove('copied');
+        btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`;
+      }, 2000);
+    }
+
+    loadSkills();
+  </script>
+</body>
+</html>

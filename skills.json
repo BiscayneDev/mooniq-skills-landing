@@ -1,0 +1,123 @@
+{
+  "skills": [
+    {
+      "id": "mooniq-buy-crypto",
+      "name": "Buy Crypto",
+      "description": "Buy any token using USDC. Supports simulation mode for safe testing.",
+      "author": "Moon IQ",
+      "authorUrl": "https://moon-iq.com",
+      "category": "trading",
+      "official": true,
+      "installCmd": "npx moon-iq-skills install mooniq-buy-crypto --to ./skills",
+      "docsUrl": "https://moon-iq.com/docs/skills/buy-crypto"
+    },
+    {
+      "id": "mooniq-sell-crypto",
+      "name": "Sell Crypto",
+      "description": "Sell any token for USDC. Includes quote preview and confirmation flow.",
+      "author": "Moon IQ",
+      "authorUrl": "https://moon-iq.com",
+      "category": "trading",
+      "official": true,
+      "installCmd": "npx moon-iq-skills install mooniq-sell-crypto --to ./skills",
+      "docsUrl": "https://moon-iq.com/docs/skills/sell-crypto"
+    },
+    {
+      "id": "mooniq-swap-tokens",
+      "name": "Swap Tokens",
+      "description": "Swap any token A for token B. Routes through best liquidity sources.",
+      "author": "Moon IQ",
+      "authorUrl": "https://moon-iq.com",
+      "category": "trading",
+      "official": true,
+      "installCmd": "npx moon-iq-skills install mooniq-swap-tokens --to ./skills",
+      "docsUrl": "https://moon-iq.com/docs/skills/swap-tokens"
+    },
+    {
+      "id": "mooniq-check-wallet",
+      "name": "Check Wallet",
+      "description": "View wallet balances, holdings, and portfolio value across chains.",
+      "author": "Moon IQ",
+      "authorUrl": "https://moon-iq.com",
+      "category": "portfolio",
+      "official": true,
+      "installCmd": "npx moon-iq-skills install mooniq-check-wallet --to ./skills",
+      "docsUrl": "https://moon-iq.com/docs/skills/check-wallet"
+    },
+    {
+      "id": "mooniq-discover-tokens",
+      "name": "Discover Tokens",
+      "description": "Search tokens, view trending, get market data and token details.",
+      "author": "Moon IQ",
+      "authorUrl": "https://moon-iq.com",
+      "category": "research",
+      "official": true,
+      "installCmd": "npx moon-iq-skills install mooniq-discover-tokens --to ./skills",
+      "docsUrl": "https://moon-iq.com/docs/skills/discover-tokens"
+    },
+    {
+      "id": "mooniq-limit-orders",
+      "name": "Limit Orders",
+      "description": "Create buy/sell orders that execute when price hits your target.",
+      "author": "Moon IQ",
+      "authorUrl": "https://moon-iq.com",
+      "category": "trading",
+      "official": true,
+      "installCmd": "npx moon-iq-skills install mooniq-limit-orders --to ./skills",
+      "docsUrl": "https://moon-iq.com/docs/skills/limit-orders"
+    },
+    {
+      "id": "mooniq-recurring-orders",
+      "name": "Recurring Orders",
+      "description": "Set up DCA strategies with automated recurring buys/sells.",
+      "author": "Moon IQ",
+      "authorUrl": "https://moon-iq.com",
+      "category": "automation",
+      "official": true,
+      "installCmd": "npx moon-iq-skills install mooniq-recurring-orders --to ./skills",
+      "docsUrl": "https://moon-iq.com/docs/skills/recurring-orders"
+    },
+    {
+      "id": "mooniq-lending",
+      "name": "Lending",
+      "description": "Deposit tokens to earn yield. View rates and manage positions.",
+      "author": "Moon IQ",
+      "authorUrl": "https://moon-iq.com",
+      "category": "defi",
+      "official": true,
+      "installCmd": "npx moon-iq-skills install mooniq-lending --to ./skills",
+      "docsUrl": "https://moon-iq.com/docs/skills/lending"
+    },
+    {
+      "id": "mooniq-onramp-offramp",
+      "name": "Onramp / Offramp",
+      "description": "Convert between fiat and crypto via MoonPay rails.",
+      "author": "Moon IQ",
+      "authorUrl": "https://moon-iq.com",
+      "category": "payments",
+      "official": true,
+      "installCmd": "npx moon-iq-skills install mooniq-onramp-offramp --to ./skills",
+      "docsUrl": "https://moon-iq.com/docs/skills/onramp-offramp"
+    },
+    {
+      "id": "mooniq-auth",
+      "name": "Auth",
+      "description": "Login, check auth status, and troubleshoot authentication issues.",
+      "author": "Moon IQ",
+      "authorUrl": "https://moon-iq.com",
+      "category": "utility",
+      "official": true,
+      "installCmd": "npx moon-iq-skills install mooniq-auth --to ./skills",
+      "docsUrl": "https://moon-iq.com/docs/skills/auth"
+    }
+  ],
+  "categories": [
+    {"id": "trading", "name": "Trading", "icon": "📈"},
+    {"id": "portfolio", "name": "Portfolio", "icon": "💼"},
+    {"id": "research", "name": "Research", "icon": "🔍"},
+    {"id": "automation", "name": "Automation", "icon": "🤖"},
+    {"id": "defi", "name": "DeFi", "icon": "🏦"},
+    {"id": "payments", "name": "Payments", "icon": "💳"},
+    {"id": "utility", "name": "Utility", "icon": "🔧"}
+  ]
+}
